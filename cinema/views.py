@@ -18,12 +18,6 @@ from cinema.serializers import (
 )
 
 
-class OrderPagination(PageNumberPagination):
-    page_size = 10
-    page_size_query_param = "page"
-    max_page_size = 100
-
-
 class GenreViewSet(viewsets.ModelViewSet):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
@@ -101,10 +95,11 @@ class MovieSessionViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(movie_id=movie)
 
         if self.action == "list":
-            queryset = queryset.prefetch_related(
+            queryset = queryset.select_related(
                 "cinema_hall",
-                "tickets",
                 "movie",
+            ).annotate(
+                tickets_sold=Count("tickets")
             )
         return queryset
 
@@ -112,7 +107,6 @@ class MovieSessionViewSet(viewsets.ModelViewSet):
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
-    pagination_class = OrderPagination
 
     def get_serializer_class(self):
         if self.action == "list":
