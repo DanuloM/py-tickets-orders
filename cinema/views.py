@@ -1,8 +1,5 @@
 from django.db.models import Prefetch, Count
-from django.template.context_processors import request
 from rest_framework import viewsets
-from rest_framework.pagination import PageNumberPagination
-
 from cinema.models import Genre, Actor, CinemaHall, Movie, MovieSession, Order
 
 from cinema.serializers import (
@@ -14,7 +11,9 @@ from cinema.serializers import (
     MovieSessionListSerializer,
     MovieDetailSerializer,
     MovieSessionDetailSerializer,
-    MovieListSerializer, OrderSerializer, OrderListSerializer,
+    MovieListSerializer,
+    OrderSerializer,
+    OrderListSerializer,
 )
 
 
